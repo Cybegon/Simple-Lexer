@@ -1,10 +1,9 @@
 #include <stdio.h>
 
-#include "../src/public/reader.h"
-#include "../src/public/lexer.h"
+#include "libsl/reader.h"
+#include "libsl/lexer.h"
 
 const SLLexList lexList[] = {
-        SL_START_LEXEME(T_IDENTIFIER),
         SL_SET_LEXEME("import", T_KEYWORD, NULL),
         SL_SET_LEXEME("i32", T_KEYWORD, NULL),
         SL_SET_LEXEME("f32", T_KEYWORD, NULL),

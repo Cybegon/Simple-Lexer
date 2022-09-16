@@ -1,4 +1,1 @@
-file(GLOB_RECURSE HSRC ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
-file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
-
-add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC} ${HSRC})
+add_subdirectory(libsl/)

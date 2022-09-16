@@ -4,7 +4,6 @@
 // Do not edit after build SL library
 
 #define SL_ENUM_START 256
-#define SL_IDENTIFIER SL_ENUM_START
 
 #if !defined(NO_STDLIB)
 #   include <stdio.h>

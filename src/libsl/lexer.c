@@ -1,7 +1,7 @@
-#include "public/lexer.h"
+#include "lexer.h"
 
-#include "public/config.h"
-#include "public/reader.h"
+#include "config.h"
+#include "reader.h"
 
 SLToken lex();
 
@@ -19,7 +19,7 @@ SLLexerContext* sl_createLexerContext(const SLLexList lexList[], const SLLexStag
 
 SLString sl_getTokenType(SLLexerContext* ctx, SLToken token)
 {
-    if (token.type < 256) {
+    if (token.type < SL_ENUM_START) {
         SLString string;
         string.len = 0;
 
@@ -81,7 +81,7 @@ dint sl_lexemeHandler(SLLexerContext* ctx, dint* LastChar, SLToken* token)
             }
         }
 
-        token->type             = SL_IDENTIFIER;
+        token->type             = T_IDENTIFIER;
         token->typeName         = SL_SET_STRING(SL_TOSTRING(T_IDENTIFIER));
         token->identString      = SL_STRDUP(ctx->IdentifierStr.data);
 
@@ -166,7 +166,7 @@ SLToken lex(SLLexerContext* ctx)
     if (ctx->lexemeList == NULL) {
         ctx->lastError = -1;
 
-        return token;
+        return (SLToken){T_ERR, SL_SET_STRING(SL_TOSTRING(T_ERR)), 0, ctx->CurLoc};
     }
 
     for (dint i = 0; ctx->lexStageList != NULL; ++i) {

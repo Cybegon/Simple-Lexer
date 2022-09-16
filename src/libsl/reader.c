@@ -1,4 +1,4 @@
-#include "public/reader.h"
+#include "reader.h"
 
 dint sl_isSpace(dint c)
 {

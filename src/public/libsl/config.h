@@ -21,7 +21,6 @@ enum TokenType {
 
 #define SL_SET_LEXEME(s, t, ud) { t, SL_SET_STRING(SL_TOSTRING(t)), SL_SET_STRING(s), ud }
 
-#define SL_START_LEXEME(e) SL_SET_LEXEME("", e, NULL)
 #define SL_END_LEXEME(e)   SL_SET_LEXEME("", e, NULL)
 
 #endif //SMALLMOUSE_CONFIG_H
