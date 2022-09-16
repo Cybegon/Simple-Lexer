@@ -5,4 +5,4 @@ file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 include_directories(${CMAKE_SOURCE_DIR}/src/public)
 include_directories(${CMAKE_SOURCE_DIR}/src/public/libsl)
 
-add_library(${CMAKE_PROJECT_NAME} STATIC ${SRC} ${HSRC} ${PHSRC})
+add_library(sl ${SL_STATIC} ${SRC} ${HSRC} ${PHSRC})

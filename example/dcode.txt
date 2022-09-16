@@ -1,0 +1,16 @@
+import com.limaaron;
+
+i32 he = 0xFF;
+
+f32 test = 10;
+i32 test2 = 15;
+
+if (test == test2) {
+	while (test2 != test) {
+		printf("ddsdsds");
+	}
+}
+
+for(test <= test2) {
+
+}

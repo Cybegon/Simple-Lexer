@@ -4,4 +4,7 @@ file(GLOB_RECURSE SRC ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
 include_directories(${CMAKE_SOURCE_DIR}/src/public)
 
 add_executable(${CMAKE_PROJECT_NAME}-example ${SRC} ${HSRC})
-target_link_libraries(${CMAKE_PROJECT_NAME}-example ${CMAKE_PROJECT_NAME})
+target_link_libraries(${CMAKE_PROJECT_NAME}-example sl)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/dcode.txt
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

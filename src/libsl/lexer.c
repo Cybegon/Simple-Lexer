@@ -69,7 +69,7 @@ dint sl_lexemeHandler(SLLexerContext* ctx, dint* LastChar, SLToken* token)
         while (isalnum((*LastChar = sl_advance(ctx))) || *LastChar == '.')
             ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
 
-        for (dint i = 0; ctx->lexemeList[i].tokenType != EOF; ++i) {
+        for (dint i = 0; ctx->lexemeList[i].tokenType != T_EOF; ++i) {
             if (ctx->IdentifierStr.len == ctx->lexemeList[i].lexeme.len && ctx->lexemeList[i].lexeme.len != 0) {
                 if (strncmp(ctx->IdentifierStr.data, ctx->lexemeList[i].lexeme.data, ctx->lexemeList[i].lexeme.len) == 0) {
                     token->type          = ctx->lexemeList[i].tokenType;
@@ -105,8 +105,8 @@ dint sl_matchNumber(SLLexerContext* ctx, dint* LastChar, SLToken* token)
                 *LastChar = sl_advance(ctx);
             } while (isxdigit(*LastChar));
 
-            token->type     = T_NUMBER;
-            token->typeName = SL_SET_STRING(SL_TOSTRING(T_NUMBER));
+            token->type     = T_CONSTANT;
+            token->typeName = SL_SET_STRING(SL_TOSTRING(T_CONSTANT));
             token->value    = (double)strtoul(hexNumStr.data, NULL, 16);
 
             return SL_LEX_RET_TOK;
@@ -127,9 +127,9 @@ dint sl_matchNumber(SLLexerContext* ctx, dint* LastChar, SLToken* token)
             *LastChar = sl_advance(ctx);
         } while (isdigit(*LastChar) || *LastChar == '.');
 
-        token->type = T_NUMBER;
-        token->typeName = (SLString)SL_SET_STRING(SL_TOSTRING(T_NUMBER));
-        token->value = (double)strtod(numStr.data, NULL);
+        token->type     = T_CONSTANT;
+        token->typeName = SL_SET_STRING(SL_TOSTRING(T_CONSTANT));
+        token->value    = (double)strtod(numStr.data, NULL);
 
         return SL_LEX_RET_TOK;
     }

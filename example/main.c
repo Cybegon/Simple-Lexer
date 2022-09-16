@@ -4,13 +4,13 @@
 #include "libsl/lexer.h"
 
 const SLLexList lexList[] = {
-        SL_SET_LEXEME("import", T_KEYWORD, NULL),
-        SL_SET_LEXEME("i32", T_KEYWORD, NULL),
-        SL_SET_LEXEME("f32", T_KEYWORD, NULL),
-        SL_SET_LEXEME("if", T_KEYWORD, NULL),
-        SL_SET_LEXEME("while", T_KEYWORD, NULL),
-        SL_SET_LEXEME("for", T_KEYWORD, NULL),
-        SL_END_LEXEME(T_EOF)
+        SL_SET_LEXEME("import", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("i32", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("f32", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("if", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("while", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("for", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_END_LEXEME
 };
 
 const SLLexStage lexStageLst[] = {
@@ -24,9 +24,8 @@ const SLLexStage lexStageLst[] = {
 };
 
 int main() {
-
     SLLexerContext* ctx = sl_createLexerContext(lexList, lexStageLst);
-    sl_openFile(ctx, "G:/dcode.txt");
+    sl_openFile(ctx, "dcode.txt");
 
     for (SLToken token = sl_getNextToken(ctx); token.type != T_EOF; token = sl_getNextToken(ctx)) {
         switch (token.type) {
@@ -35,7 +34,7 @@ int main() {
                 printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
                 break;
             }
-            case T_NUMBER: {
+            case T_CONSTANT: {
                 printf("%s value: %f\n", sl_getTokenType(ctx, token).data, token.value);
                 break;
             }
@@ -44,6 +43,9 @@ int main() {
                 break;
             }
         }
+
+        if (token.type == T_IDENTIFIER)
+            free(token.identString);
     }
 
     sl_closeFile(ctx);

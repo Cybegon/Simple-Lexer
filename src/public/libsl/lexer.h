@@ -36,11 +36,12 @@ struct SLUserData {
 };
 
 struct SLLexList {
-    duint64     tokenType;
-    SLString   tokenName;
-    SLString   lexeme;
+    SLTokenType tokenType;
+    SLString    tokenName;
+    duint32     tokenInfo;
+    SLString    lexeme;
 
-    SLUserData userData;
+    SLUserData  userData;
 };
 
 struct SLLexerContext {
