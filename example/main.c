@@ -13,6 +13,19 @@ const SLLexList lexList[] = {
         SL_END_LEXEME
 };
 
+const SLLexList lexList_rb[] = {
+        SL_SET_LEXEME("require", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("if", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("not", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("else", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("case ", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("when", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("while", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("for", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
+        SL_SET_LEXEME("OWN_DIR", T_CONSTANT, 1, NULL),
+        SL_END_LEXEME
+};
+
 const SLLexStage lexStageLst[] = {
         sl_skipAnyWhitespace,
         sl_setLocation,
@@ -24,21 +37,30 @@ const SLLexStage lexStageLst[] = {
         NULL
 };
 
+const char* const paths[] = {
+        "dcode.txt",
+        "test.rb",
+        NULL
+};
+
 int main() {
-    SLLexerContext* ctx = sl_createLexerContext(lexList, lexStageLst);
+    printf("\n========================dcode.txt========================\n");
+    SLLexerContext* ctx;
+    ctx = sl_createLexerContext(lexList, lexStageLst);
+
     sl_openFile(ctx, "dcode.txt");
 
     for (SLToken token = sl_getNextToken(ctx); token.type != T_EOF; token = sl_getNextToken(ctx)) {
         switch (token.type) {
-            case T_IDENTIFIER:
-            case T_KEYWORD:
-            case T_PUNCTUATOR:
-            case T_STRING: {
+            case T_IDENTIFIER:case T_KEYWORD:case T_STRING: {
                 printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
                 break;
             }
             case T_CONSTANT: {
-                printf("%s value: %f\n", sl_getTokenType(ctx, token).data, token.value);
+                if (token.tokenInfo == 1)
+                    printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
+                else
+                    printf("%s value: %f\n", sl_getTokenType(ctx, token).data, token.value);
                 break;
             }
             default: {
@@ -52,6 +74,40 @@ int main() {
     }
 
     sl_closeFile(ctx);
+    sl_freeLexerContext(ctx);
+    printf("========================dcode.txt========================\n");
+
+    printf("\n========================test.rb========================\n");
+    SLLexerContext* ctx2 = sl_createLexerContext(lexList, lexStageLst);
+
+    sl_openFile(ctx2, "test.rb");
+
+    for (SLToken token = sl_getNextToken(ctx2); token.type != T_EOF; token = sl_getNextToken(ctx2)) {
+        switch (token.type) {
+            case T_IDENTIFIER:case T_KEYWORD:case T_STRING: {
+                printf("%s name: %s\n", sl_getTokenType(ctx2, token).data, token.identString);
+                break;
+            }
+            case T_CONSTANT: {
+                if (token.tokenInfo == 1)
+                    printf("%s name: %s\n", sl_getTokenType(ctx2, token).data, token.identString);
+                else
+                    printf("%s value: %f\n", sl_getTokenType(ctx2, token).data, token.value);
+                break;
+            }
+            default: {
+                printf("%s\n", sl_getTokenType(ctx2, token).data);
+                break;
+            }
+        }
+
+        if (token.type == T_IDENTIFIER || token.type == T_STRING)
+            free(token.identString);
+    }
+
+    sl_closeFile(ctx2);
+    sl_freeLexerContext(ctx2);
+    printf("========================test.rb========================\n");
 
     return 0;
 }

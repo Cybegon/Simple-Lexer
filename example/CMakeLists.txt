@@ -8,3 +8,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME}-example sl)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/dcode.txt
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/test.rb
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

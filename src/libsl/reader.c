@@ -23,7 +23,7 @@ void sl_openFile(SLLexerContext* ctx, const char* path)
         ctx->curFile = NULL;
     }
 
-    ctx->curFile = SL_FOPEN(path, "r");
+    ctx->curFile = SL_FOPEN(path, "r+");
 }
 
 void sl_closeFile(SLLexerContext* ctx)

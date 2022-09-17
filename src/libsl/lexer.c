@@ -17,6 +17,11 @@ SLLexerContext* sl_createLexerContext(const SLLexList lexList[], const SLLexStag
     return ctx;
 }
 
+void sl_freeLexerContext(SLLexerContext* ctx)
+{
+    SL_FREE(ctx);
+}
+
 SLString sl_getTokenType(SLLexerContext* ctx, SLToken token)
 {
     if (token.type < SL_ENUM_START) {
@@ -60,13 +65,13 @@ dint sl_setLocation(SLLexerContext* ctx, dint* LastChar, SLToken* token)
 
 dint sl_lexemeHandler(SLLexerContext* ctx, dint* LastChar, SLToken* token)
 {
-    if (isalpha(*LastChar)) { // [a-zA-Z][a-zA-Z0-9]*
+    if (isalpha(*LastChar) || *LastChar == '_') { // [a-zA-Z][a-zA-Z0-9_.]*
         memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
         ctx->IdentifierStr.len = 0;
 
         ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
 
-        while (isalnum((*LastChar = sl_advance(ctx))) || *LastChar == '.')
+        while (isalnum((*LastChar = sl_advance(ctx))) || *LastChar == '.' || *LastChar == '_')
             ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
 
         for (dint i = 0; ctx->lexemeList[i].tokenType != T_EOF; ++i) {
@@ -100,6 +105,22 @@ dint sl_mathString(SLLexerContext* ctx, dint* LastChar, SLToken* token)
         ctx->IdentifierStr.len = 0;
 
         while ((*LastChar = sl_advance(ctx)) != '"') // TODO: Match \n\r etc...
+            ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
+        *LastChar = sl_advance(ctx); // Skip "
+
+        token->type         = T_STRING;
+        token->typeName     = SL_SET_STRING(SL_TOSTRING(T_STRING));
+        token->tokenInfo    = SL_TOKEN_INFO_NONE;
+        token->identString  = strdup(ctx->IdentifierStr.data);
+
+        return SL_LEX_RET_TOK;
+    }
+
+    if (*LastChar == '\'') {
+        memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
+        ctx->IdentifierStr.len = 0;
+
+        while ((*LastChar = sl_advance(ctx)) != '\'') // TODO: Match \n\r etc...
             ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
         *LastChar = sl_advance(ctx); // Skip "
 
@@ -146,6 +167,9 @@ dint sl_matchNumber(SLLexerContext* ctx, dint* LastChar, SLToken* token)
         numStr.data[numStr.len++] = (char)*LastChar;
         *LastChar = sl_advance(ctx);
 
+        if (!isdigit(*LastChar))
+            return '.';
+
         do {
             numStr.data[numStr.len++] = (char)*LastChar;
             *LastChar = sl_advance(ctx);
@@ -166,6 +190,7 @@ dint sl_checkEOF(SLLexerContext* ctx, dint* LastChar, SLToken* token)
     // Check for end of file.  Don't eat the EOF.
     if (*LastChar == EOF) {
         token->type = EOF;
+        *LastChar = ' ';
 
         return SL_LEX_RET_TOK;
     }
