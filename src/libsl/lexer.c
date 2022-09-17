@@ -72,9 +72,10 @@ dint sl_lexemeHandler(SLLexerContext* ctx, dint* LastChar, SLToken* token)
         for (dint i = 0; ctx->lexemeList[i].tokenType != T_EOF; ++i) {
             if (ctx->IdentifierStr.len == ctx->lexemeList[i].lexeme.len && ctx->lexemeList[i].lexeme.len != 0) {
                 if (strncmp(ctx->IdentifierStr.data, ctx->lexemeList[i].lexeme.data, ctx->lexemeList[i].lexeme.len) == 0) {
-                    token->type          = ctx->lexemeList[i].tokenType;
-                    token->typeName      = ctx->lexemeList[i].tokenName;
-                    token->identString   = (char*)ctx->lexemeList[i].lexeme.data;
+                    token->type         = ctx->lexemeList[i].tokenType;
+                    token->typeName     = ctx->lexemeList[i].tokenName;
+                    token->tokenInfo    = ctx->lexemeList[i].tokenInfo;
+                    token->identString  = (char*)ctx->lexemeList[i].lexeme.data;
 
                     return SL_LEX_RET_TOK;
                 }
@@ -83,7 +84,29 @@ dint sl_lexemeHandler(SLLexerContext* ctx, dint* LastChar, SLToken* token)
 
         token->type             = T_IDENTIFIER;
         token->typeName         = SL_SET_STRING(SL_TOSTRING(T_IDENTIFIER));
+        token->tokenInfo        = SL_TOKEN_INFO_NONE;
         token->identString      = SL_STRDUP(ctx->IdentifierStr.data);
+
+        return SL_LEX_RET_TOK;
+    }
+
+    return SL_LEX_SUCCESS;
+}
+
+dint sl_mathString(SLLexerContext* ctx, dint* LastChar, SLToken* token)
+{
+    if (*LastChar == '"') {
+        memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
+        ctx->IdentifierStr.len = 0;
+
+        while ((*LastChar = sl_advance(ctx)) != '"') // TODO: Match \n\r etc...
+            ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)*LastChar;
+        *LastChar = sl_advance(ctx); // Skip "
+
+        token->type         = T_STRING;
+        token->typeName     = SL_SET_STRING(SL_TOSTRING(T_STRING));
+        token->tokenInfo    = SL_TOKEN_INFO_NONE;
+        token->identString  = strdup(ctx->IdentifierStr.data);
 
         return SL_LEX_RET_TOK;
     }
@@ -105,9 +128,10 @@ dint sl_matchNumber(SLLexerContext* ctx, dint* LastChar, SLToken* token)
                 *LastChar = sl_advance(ctx);
             } while (isxdigit(*LastChar));
 
-            token->type     = T_CONSTANT;
-            token->typeName = SL_SET_STRING(SL_TOSTRING(T_CONSTANT));
-            token->value    = (double)strtoul(hexNumStr.data, NULL, 16);
+            token->type         = T_CONSTANT;
+            token->typeName     = SL_SET_STRING(SL_TOSTRING(T_CONSTANT));
+            token->tokenInfo    = SL_TOKEN_INFO_NONE;
+            token->value        = (double)strtoul(hexNumStr.data, NULL, 16);
 
             return SL_LEX_RET_TOK;
         }
@@ -166,7 +190,7 @@ SLToken lex(SLLexerContext* ctx)
     if (ctx->lexemeList == NULL) {
         ctx->lastError = -1;
 
-        return (SLToken){T_ERR, SL_SET_STRING(SL_TOSTRING(T_ERR)), 0, ctx->CurLoc};
+        return (SLToken){T_ERR, SL_SET_STRING(SL_TOSTRING(T_ERR)), SL_TOKEN_INFO_NONE, 0, ctx->CurLoc};
     }
 
     for (dint i = 0; ctx->lexStageList != NULL; ++i) {
@@ -177,7 +201,7 @@ SLToken lex(SLLexerContext* ctx)
                 return token;
             case SL_LEX_FAIL:
             default:
-                return (SLToken){T_ERR, SL_SET_STRING(SL_TOSTRING(T_ERR)), 0, ctx->CurLoc};
+                return (SLToken){T_ERR, SL_SET_STRING(SL_TOSTRING(T_ERR)), SL_TOKEN_INFO_NONE, 0, ctx->CurLoc};
         }
     }
 

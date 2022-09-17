@@ -11,6 +11,7 @@ typedef struct SLString SLString;
 typedef struct SLSourceLocation SLSourceLocation;
 typedef struct SLLexerContext SLLexerContext;
 typedef struct SLLexList SLLexList;
+typedef struct SLPunctuatorList SLPunctuatorList;
 typedef struct SLToken SLToken;
 typedef struct SLUserData SLUserData;
 
@@ -38,7 +39,7 @@ struct SLUserData {
 struct SLLexList {
     SLTokenType tokenType;
     SLString    tokenName;
-    duint32     tokenInfo;
+    dint32      tokenInfo;
     SLString    lexeme;
 
     SLUserData  userData;
@@ -59,12 +60,13 @@ struct SLLexerContext {
 };
 
 struct SLToken {
-    duint32     type;
-    SLString   typeName;
+    SLTokenType type;
+    SLString    typeName;
+    dint32      tokenInfo;
 
     union {
-        double value;
-        char* identString;
+        double  value;
+        char*   identString;
     };
 
     SLSourceLocation sourceLocation;
@@ -80,6 +82,7 @@ SLToken sl_getNextToken   (SLLexerContext* ctx);
 dint sl_skipAnyWhitespace   (SLLexerContext* ctx, dint* LastChar, SLToken* token);
 dint sl_setLocation         (SLLexerContext* ctx, dint* LastChar, SLToken* token);
 dint sl_lexemeHandler       (SLLexerContext* ctx, dint* LastChar, SLToken* token);
+dint sl_mathString          (SLLexerContext* ctx, dint* LastChar, SLToken* token);
 dint sl_matchNumber         (SLLexerContext* ctx, dint* LastChar, SLToken* token);
 dint sl_checkEOF            (SLLexerContext* ctx, dint* LastChar, SLToken* token);
 dint sl_retASCII            (SLLexerContext* ctx, dint* LastChar, SLToken* token);

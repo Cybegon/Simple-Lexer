@@ -17,6 +17,7 @@ const SLLexStage lexStageLst[] = {
         sl_skipAnyWhitespace,
         sl_setLocation,
         sl_lexemeHandler,
+        sl_mathString,
         sl_matchNumber,
         sl_checkEOF,
         sl_retASCII,
@@ -30,7 +31,9 @@ int main() {
     for (SLToken token = sl_getNextToken(ctx); token.type != T_EOF; token = sl_getNextToken(ctx)) {
         switch (token.type) {
             case T_IDENTIFIER:
-            case T_KEYWORD: {
+            case T_KEYWORD:
+            case T_PUNCTUATOR:
+            case T_STRING: {
                 printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
                 break;
             }
@@ -44,7 +47,7 @@ int main() {
             }
         }
 
-        if (token.type == T_IDENTIFIER)
+        if (token.type == T_IDENTIFIER || token.type == T_STRING)
             free(token.identString);
     }
 

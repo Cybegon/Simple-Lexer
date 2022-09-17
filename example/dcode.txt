@@ -7,7 +7,7 @@ i32 test2 = 15;
 
 if (test == test2) {
 	while (test2 != test) {
-		printf("ddsdsds");
+		printf("hello world!!");
 	}
 }
 
