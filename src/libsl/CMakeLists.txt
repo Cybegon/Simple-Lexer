@@ -6,3 +6,8 @@ include_directories(${PROJECT_SOURCE_DIR}/src/public)
 include_directories(${PROJECT_SOURCE_DIR}/src/public/libsl)
 
 add_library(sl ${SL_STATIC} ${SRC} ${HSRC} ${PHSRC})
+
+target_include_directories(sl PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/public>
+        $<INSTALL_INTERFACE:include>
+        )
