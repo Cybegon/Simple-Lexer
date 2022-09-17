@@ -3,9 +3,9 @@
 
 #include "config.h"
 
-#define SL_LEX_FAIL    FALSE
-#define SL_LEX_SUCCESS TRUE
-#define SL_LEX_RET_TOK 3
+#define SL_LEX_FAIL         FALSE
+#define SL_LEX_SUCCESS      TRUE
+#define SL_LEX_RET_TOK      3
 
 typedef struct SLString SLString;
 typedef struct SLSourceLocation SLSourceLocation;

@@ -167,8 +167,13 @@ dint sl_matchNumber(SLLexerContext* ctx, dint* LastChar, SLToken* token)
         numStr.data[numStr.len++] = (char)*LastChar;
         *LastChar = sl_advance(ctx);
 
-        if (!isdigit(*LastChar))
-            return '.';
+        if (!isdigit(*LastChar)) { // ret ASCII
+            token->type         = '.';
+            token->tokenInfo    = 0;
+
+            return SL_LEX_RET_TOK;
+        }
+
 
         do {
             numStr.data[numStr.len++] = (char)*LastChar;
@@ -189,7 +194,7 @@ dint sl_checkEOF(SLLexerContext* ctx, dint* LastChar, SLToken* token)
 {
     // Check for end of file.  Don't eat the EOF.
     if (*LastChar == EOF) {
-        token->type = EOF;
+        token->type = T_EOF;
         *LastChar = ' ';
 
         return SL_LEX_RET_TOK;
