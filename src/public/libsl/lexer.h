@@ -16,7 +16,7 @@ typedef struct SLToken SLToken;
 typedef struct SLUserData SLUserData;
 
 typedef SLToken(*SLLexer)(SLLexerContext* ctx);
-typedef dint(*SLLexStage)(SLLexerContext* ctx, dint* LastChar, SLToken* token);
+typedef dint(*SLLexStage)(SLLexerContext* ctx, SLToken* token);
 
 typedef void(*SLUserHandler)(SLLexerContext* ctx, void* userData);
 
@@ -46,13 +46,15 @@ struct SLLexList {
 };
 
 struct SLLexerContext {
-    SL_FILE*           curFile;
-    const SLLexList*   lexemeList;
-    const SLLexStage*  lexStageList;
+    SL_FILE*            curFile;
+    const SLLexList*    lexemeList;
+    const SLLexStage*   lexStageList;
 
-    SLSourceLocation   CurLoc;// = { 0 };
-    SLSourceLocation   LexLoc;// = { 1, 0 };
-    SLString           IdentifierStr;// = { 0 };
+    SLSourceLocation    CurLoc;// = { 0 };
+    SLSourceLocation    LexLoc;// = { 1, 0 };
+    SLString            IdentifierStr;// = { 0 };
+
+    dint    LastChar;
 
     SLLexer lex;
 
@@ -80,12 +82,12 @@ SLString sl_getTokenType  (SLLexerContext* ctx, SLToken token);
 SLToken sl_getNextToken   (SLLexerContext* ctx);
 
 // Default stages
-dint sl_skipAnyWhitespace   (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_setLocation         (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_lexemeHandler       (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_mathString          (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_matchNumber         (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_checkEOF            (SLLexerContext* ctx, dint* LastChar, SLToken* token);
-dint sl_retASCII            (SLLexerContext* ctx, dint* LastChar, SLToken* token);
+dint sl_skipAnyWhitespace   (SLLexerContext* ctx, SLToken* token);
+dint sl_setLocation         (SLLexerContext* ctx, SLToken* token);
+dint sl_lexemeHandler       (SLLexerContext* ctx, SLToken* token);
+dint sl_mathString          (SLLexerContext* ctx, SLToken* token);
+dint sl_matchNumber         (SLLexerContext* ctx, SLToken* token);
+dint sl_checkEOF            (SLLexerContext* ctx, SLToken* token);
+dint sl_retASCII            (SLLexerContext* ctx, SLToken* token);
 
 #endif //SMALLMOUSE_LEXER_H
