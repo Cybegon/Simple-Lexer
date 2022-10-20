@@ -8,6 +8,8 @@ typedef enum SLTokenType SLTokenType;
 
 enum SLTokenType {
     T_NONE = SL_ENUM_START,
+    T_LABEL,
+    T_DIRECTIVE,
     T_KEYWORD,
     T_IDENTIFIER,
     T_PUNCTUATOR,
