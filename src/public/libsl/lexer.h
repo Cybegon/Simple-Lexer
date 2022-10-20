@@ -81,13 +81,4 @@ SLLexerContext* sl_initContext();
 SLString sl_getTokenType  (SLLexerContext* ctx, SLToken token);
 SLToken sl_getNextToken   (SLLexerContext* ctx);
 
-// Default stages
-dint sl_skipAnyWhitespace   (SLLexerContext* ctx, SLToken* token);
-dint sl_setLocation         (SLLexerContext* ctx, SLToken* token);
-dint sl_lexemeHandler       (SLLexerContext* ctx, SLToken* token);
-dint sl_mathString          (SLLexerContext* ctx, SLToken* token);
-dint sl_matchNumber         (SLLexerContext* ctx, SLToken* token);
-dint sl_checkEOF            (SLLexerContext* ctx, SLToken* token);
-dint sl_retASCII            (SLLexerContext* ctx, SLToken* token);
-
 #endif //SMALLMOUSE_LEXER_H

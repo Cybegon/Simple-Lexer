@@ -3,6 +3,8 @@
 #include "libsl/reader.h"
 #include "libsl/lexer.h"
 
+#include "libsl/lrules.h"
+
 const SLLexList lexList[] = {
         SL_SET_LEXEME("import", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
         SL_SET_LEXEME("i32", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),
