@@ -72,36 +72,26 @@ TO_LABEL:
 
 dint sl_mathString(SLLexerContext* ctx, SLToken* token)
 {
-    if (ctx->LastChar == '"') {
-        memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
-        ctx->IdentifierStr.len = 0;
+    char* ltok = "\"\'";
 
-        while ((ctx->LastChar = sl_advance(ctx)) != '"') // TODO: Match \n\r etc...
-            ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)ctx->LastChar;
-        ctx->LastChar = sl_advance(ctx); // Skip "
+    while ( *ltok ) {
+        if (ctx->LastChar == *ltok) {
+            memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
+            ctx->IdentifierStr.len = 0;
 
-        token->type         = T_STRING;
-        token->typeName     = SL_SET_STRING(SL_TOSTRING(T_STRING));
-        token->tokenInfo    = SL_TOKEN_INFO_NONE;
-        token->identString  = strdup(ctx->IdentifierStr.data);
+            while ((ctx->LastChar = sl_advance(ctx)) != *ltok) // TODO: Match \n\r etc...
+                ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)ctx->LastChar;
+            ctx->LastChar = sl_advance(ctx); // Skip "
 
-        return SL_LEX_RET_TOK;
-    }
+            token->type         = T_STRING;
+            token->typeName     = SL_SET_STRING(SL_TOSTRING(T_STRING));
+            token->tokenInfo    = SL_TOKEN_INFO_NONE;
+            token->identString  = strdup(ctx->IdentifierStr.data);
 
-    if (ctx->LastChar == '\'') {
-        memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
-        ctx->IdentifierStr.len = 0;
+            return SL_LEX_RET_TOK;
+        }
 
-        while ((ctx->LastChar = sl_advance(ctx)) != '\'') // TODO: Match \n\r etc...
-            ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)ctx->LastChar;
-        ctx->LastChar = sl_advance(ctx); // Skip "
-
-        token->type         = T_STRING;
-        token->typeName     = SL_SET_STRING(SL_TOSTRING(T_STRING));
-        token->tokenInfo    = SL_TOKEN_INFO_NONE;
-        token->identString  = strdup(ctx->IdentifierStr.data);
-
-        return SL_LEX_RET_TOK;
+        ++ltok;
     }
 
     return SL_LEX_NEXT_RULE;
