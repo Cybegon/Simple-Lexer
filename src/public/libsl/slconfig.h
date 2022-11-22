@@ -1,7 +1,11 @@
-#ifndef SIMPLE_LEXER_CONFIGINTERNAL_HPP
-#define SIMPLE_LEXER_CONFIGINTERNAL_HPP
+#ifndef SMALLMOUSE_CONFIG_H
+#define SMALLMOUSE_CONFIG_H
 
-// Do not edit after build SL library
+#include "datatypes.h"
+
+#if !defined(EOF)
+#   define EOF (-1)
+#endif
 
 #define SL_ENUM_START 256
 
@@ -40,8 +44,32 @@
 #   define SL_FREE(p)
 #endif
 
-#if !defined(EOF)
-#   define EOF (-1)
-#endif
+typedef enum SLTokenType SLTokenType;
 
-#endif //SIMPLE_LEXER_CONFIGINTERNAL_HPP
+enum SLTokenType {
+    T_NONE = SL_ENUM_START,
+    T_LABEL,
+    T_DIRECTIVE,
+    T_KEYWORD,
+    T_IDENTIFIER,
+    T_PUNCTUATOR,
+    T_CONSTANT,
+    T_STRING,
+
+    // Your tokens here...
+
+    T_NULL,
+    T_ERR,
+    T_EOF = EOF
+};
+
+#define SL_TOKEN_INFO_NONE 0
+
+#define SL_TOSTRING(s) #s
+#define SL_SET_STRING(s) (SLString){s, sizeof(s) - 1}
+
+#define SL_SET_LEXEME(s, t, i, ud) { t, SL_SET_STRING(SL_TOSTRING(t)), i, SL_SET_STRING(s), ud }
+
+#define SL_END_LEXEME  SL_SET_LEXEME("", T_EOF, SL_TOKEN_INFO_NONE, NULL)
+
+#endif //SMALLMOUSE_CONFIG_H

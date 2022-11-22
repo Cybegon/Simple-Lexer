@@ -1,7 +1,7 @@
-#include "lexer.h"
+#include "sllexer.h"
 
-#include "config.h"
-#include "reader.h"
+#include "slconfig.h"
+#include "slreader.h"
 
 SLToken lex();
 
@@ -61,7 +61,7 @@ SLToken lex(SLLexerContext* ctx)
 
     for (dint i = 0; ctx->lexStageList != NULL; ++i) {
         switch (ctx->lexStageList[i](ctx, &token)) {
-            case SL_LEX_SUCCESS:
+            case SL_LEX_NEXT_RULE:
                 break;
             case SL_LEX_RET_TOK:
                 return token;

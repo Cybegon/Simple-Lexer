@@ -1,13 +1,13 @@
-#include "lrules.h"
+#include "slrules.h"
 
-#include "reader.h"
+#include "slreader.h"
 
 dint sl_skipAnyWhitespace(SLLexerContext* ctx, SLToken* token)
 {
     while (sl_isSpace(ctx->LastChar)) // Skip any whitespace
         ctx->LastChar = sl_advance(ctx);
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_setLocation(SLLexerContext* ctx, SLToken* token)
@@ -15,12 +15,12 @@ dint sl_setLocation(SLLexerContext* ctx, SLToken* token)
     ctx->CurLoc = ctx->LexLoc;
     token->sourceLocation = ctx->CurLoc;
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_lexemeHandler(SLLexerContext* ctx, SLToken* token)
 {
-    if (isalpha(ctx->LastChar) || ctx->LastChar == '_') { // [a-zA-Z][a-zA-Z0-9_.]*
+    if (isalpha(ctx->LastChar) || ctx->LastChar == '_') { // [a-zA-Z][a-zA-Z0-9_.:]*
         memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
         ctx->IdentifierStr.len = 0;
 
@@ -28,6 +28,13 @@ dint sl_lexemeHandler(SLLexerContext* ctx, SLToken* token)
 
         while (isalnum((ctx->LastChar = sl_advance(ctx))) || ctx->LastChar == '.' || ctx->LastChar == '_')
             ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)ctx->LastChar;
+
+        if (ctx->LastChar == ':') { // match label
+            ctx->IdentifierStr.data[ctx->IdentifierStr.len++] = (char)ctx->LastChar;
+            ctx->LastChar = sl_advance(ctx);
+
+            goto TO_LABEL;
+        }
 
         for (dint i = 0; ctx->lexemeList[i].tokenType != T_EOF; ++i) {
             if (ctx->IdentifierStr.len == ctx->lexemeList[i].lexeme.len && ctx->lexemeList[i].lexeme.len != 0) {
@@ -42,15 +49,25 @@ dint sl_lexemeHandler(SLLexerContext* ctx, SLToken* token)
             }
         }
 
-        token->type             = T_IDENTIFIER;
-        token->typeName         = SL_SET_STRING(SL_TOSTRING(T_IDENTIFIER));
+TO_LABEL:
+        if (ctx->IdentifierStr.data[ctx->IdentifierStr.len - 1] == ':')
+        {
+            token->type             = T_LABEL;
+            token->typeName         = SL_SET_STRING(SL_TOSTRING(T_LABEL));
+        }
+        else
+        {
+            token->type             = T_IDENTIFIER;
+            token->typeName         = SL_SET_STRING(SL_TOSTRING(T_IDENTIFIER));
+        }
+
         token->tokenInfo        = SL_TOKEN_INFO_NONE;
         token->identString      = SL_STRDUP(ctx->IdentifierStr.data);
 
         return SL_LEX_RET_TOK;
     }
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_mathString(SLLexerContext* ctx, SLToken* token)
@@ -87,7 +104,7 @@ dint sl_mathString(SLLexerContext* ctx, SLToken* token)
         return SL_LEX_RET_TOK;
     }
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_matchNumber(SLLexerContext* ctx, SLToken* token)
@@ -141,7 +158,7 @@ dint sl_matchNumber(SLLexerContext* ctx, SLToken* token)
         return SL_LEX_RET_TOK;
     }
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_checkEOF(SLLexerContext* ctx, SLToken* token)
@@ -154,7 +171,7 @@ dint sl_checkEOF(SLLexerContext* ctx, SLToken* token)
         return SL_LEX_RET_TOK;
     }
 
-    return SL_LEX_SUCCESS;
+    return SL_LEX_NEXT_RULE;
 }
 
 dint sl_retASCII(SLLexerContext* ctx, SLToken* token)

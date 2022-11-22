@@ -1,9 +1,9 @@
 #include <stdio.h>
 
-#include "libsl/reader.h"
-#include "libsl/lexer.h"
+#include "slreader.h"
+#include "sllexer.h"
 
-#include "libsl/lrules.h"
+#include "slrules.h"
 
 const SLLexList lexList[] = {
         SL_SET_LEXEME("import", T_KEYWORD, SL_TOKEN_INFO_NONE, NULL),

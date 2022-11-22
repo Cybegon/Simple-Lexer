@@ -1,9 +1,9 @@
-#ifndef SIMPLE_LEXER_LRULES_H
-#define SIMPLE_LEXER_LRULES_H
+#ifndef SIMPLE_LEXER_SLRULES_H
+#define SIMPLE_LEXER_SLRULES_H
 
 #include "datatypes.h"
 
-#include "lexer.h"
+#include "sllexer.h"
 
 // Default stages
 dint sl_skipAnyWhitespace   (SLLexerContext* ctx, SLToken* token);
@@ -14,4 +14,4 @@ dint sl_matchNumber         (SLLexerContext* ctx, SLToken* token);
 dint sl_checkEOF            (SLLexerContext* ctx, SLToken* token);
 dint sl_retASCII            (SLLexerContext* ctx, SLToken* token);
 
-#endif //SIMPLE_LEXER_LRULES_H
+#endif //SIMPLE_LEXER_SLRULES_H

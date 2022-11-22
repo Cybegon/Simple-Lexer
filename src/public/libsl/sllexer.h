@@ -1,10 +1,10 @@
 #ifndef SMALLMOUSE_LEXER_H
 #define SMALLMOUSE_LEXER_H
 
-#include "config.h"
+#include "slconfig.h"
 
 #define SL_LEX_FAIL         FALSE
-#define SL_LEX_SUCCESS      TRUE
+#define SL_LEX_NEXT_RULE    TRUE
 #define SL_LEX_RET_TOK      3
 
 typedef struct SLString SLString;

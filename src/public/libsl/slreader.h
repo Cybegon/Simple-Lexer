@@ -1,8 +1,8 @@
 #ifndef SMALLMOUSE_READER_H
 #define SMALLMOUSE_READER_H
 
-#include "config.h"
-#include "lexer.h"
+#include "slconfig.h"
+#include "sllexer.h"
 
 dint sl_isSpace(dint c);
 
