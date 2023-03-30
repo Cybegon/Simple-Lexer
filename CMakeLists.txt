@@ -11,5 +11,7 @@ else()
     set(SL_STATIC STATIC)
 endif()
 
+add_subdirectory(extlibs/datatypes.h)
+
 add_subdirectory(src/)
 add_subdirectory(example/)

@@ -1,0 +1,3 @@
+[submodule "extlibs/datatypes.h"]
+	path = extlibs/datatypes.h
+	url = https://github.com/Cybegon/datatypes.h

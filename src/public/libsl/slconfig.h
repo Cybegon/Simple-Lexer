@@ -1,5 +1,5 @@
-#ifndef SMALLMOUSE_CONFIG_H
-#define SMALLMOUSE_CONFIG_H
+#ifndef SIMPLE_LEXER_CONFIG_H
+#define SIMPLE_LEXER_CONFIG_H
 
 #include "datatypes.h"
 
@@ -73,4 +73,4 @@ enum SLTokenType {
 
 #define SL_END_LEXEME  SL_SET_LEXEME("", T_EOF, SL_TOKEN_INFO_NONE, NULL)
 
-#endif //SMALLMOUSE_CONFIG_H
+#endif //SIMPLE_LEXER_CONFIG_H

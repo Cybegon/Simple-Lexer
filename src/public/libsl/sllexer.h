@@ -1,5 +1,5 @@
-#ifndef SMALLMOUSE_LEXER_H
-#define SMALLMOUSE_LEXER_H
+#ifndef SIMPLE_LEXER_LEXER_H
+#define SIMPLE_LEXER_LEXER_H
 
 #include "slconfig.h"
 
@@ -15,8 +15,8 @@ typedef struct SLPunctuatorList SLPunctuatorList;
 typedef struct SLToken SLToken;
 typedef struct SLUserData SLUserData;
 
-typedef dint(*SLLexStage)(SLLexerContext* ctx, SLToken* token);
-typedef SLToken(*SLLexer)(SLLexerContext* ctx);
+typedef SLToken (*SLLexer)(SLLexerContext* ctx);
+typedef dint (*SLLexStage)(SLLexerContext* ctx, SLToken* token);
 
 typedef void(*SLUserHandler)(SLLexerContext* ctx, void* userData);
 
@@ -81,4 +81,4 @@ SLLexerContext* sl_initContext();
 SLString sl_getTokenType  (SLLexerContext* ctx, SLToken token);
 SLToken sl_getNextToken   (SLLexerContext* ctx);
 
-#endif //SMALLMOUSE_LEXER_H
+#endif //SIMPLE_LEXER_LEXER_H

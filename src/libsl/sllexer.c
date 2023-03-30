@@ -3,7 +3,7 @@
 #include "slconfig.h"
 #include "slreader.h"
 
-SLToken lex();
+SLToken lex(SLLexerContext* ctx);
 
 SLLexerContext* sl_createLexerContext(const SLLexList lexList[], const SLLexStage lexStageList[])
 {

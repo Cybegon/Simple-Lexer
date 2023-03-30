@@ -1,5 +1,5 @@
-#ifndef SMALLMOUSE_READER_H
-#define SMALLMOUSE_READER_H
+#ifndef SIMPLE_LEXER_READER_H
+#define SIMPLE_LEXER_READER_H
 
 #include "slconfig.h"
 #include "sllexer.h"
@@ -12,4 +12,4 @@ void sl_closeFile   (SLLexerContext* ctx);
 dint sl_getc    (SLLexerContext* ctx);
 dint sl_advance (SLLexerContext* ctx);
 
-#endif //SMALLMOUSE_READER_H
+#endif //SIMPLE_LEXER_READER_H
