@@ -15,8 +15,8 @@ typedef struct SLPunctuatorList SLPunctuatorList;
 typedef struct SLToken SLToken;
 typedef struct SLUserData SLUserData;
 
-typedef SLToken(*SLLexer)(SLLexerContext* ctx);
 typedef dint(*SLLexStage)(SLLexerContext* ctx, SLToken* token);
+typedef SLToken(*SLLexer)(SLLexerContext* ctx);
 
 typedef void(*SLUserHandler)(SLLexerContext* ctx, void* userData);
 
