@@ -11,7 +11,9 @@ else()
     set(SL_STATIC STATIC)
 endif()
 
-add_subdirectory(extlibs/datatypes.h)
+if (NOT TARGET datatypes)
+    add_subdirectory(${PROJECT_SOURCE_DIR}/extlibs/datatypes.h)
+endif()
 
 add_subdirectory(src/)
 add_subdirectory(example/)
