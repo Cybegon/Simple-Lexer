@@ -54,7 +54,11 @@ int main() {
 
     for (SLToken token = sl_getNextToken(ctx); token.type != T_EOF; token = sl_getNextToken(ctx)) {
         switch (token.type) {
-            case T_IDENTIFIER:case T_KEYWORD:case T_STRING: {
+            case T_LABEL:
+            case T_IDENTIFIER:
+            case T_KEYWORD:
+            case T_REGISTER:
+            case T_STRING: {
                 printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
                 break;
             }
@@ -86,8 +90,12 @@ int main() {
 
     for (SLToken token = sl_getNextToken(ctx2); token.type != T_EOF; token = sl_getNextToken(ctx2)) {
         switch (token.type) {
-            case T_IDENTIFIER:case T_KEYWORD:case T_STRING: {
-                printf("%s name: %s\n", sl_getTokenType(ctx2, token).data, token.identString);
+            case T_LABEL:
+            case T_IDENTIFIER:
+            case T_KEYWORD:
+            case T_REGISTER:
+            case T_STRING: {
+                printf("%s name: %s\n", sl_getTokenType(ctx, token).data, token.identString);
                 break;
             }
             case T_CONSTANT: {
