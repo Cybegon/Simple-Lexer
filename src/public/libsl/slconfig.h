@@ -55,11 +55,11 @@ enum SLTokenType {
     T_IDENTIFIER,
     T_PUNCTUATOR,
     T_CONSTANT,
-    T_STRING,
+    T_STRING = 0xFF,
 
     // Your tokens here...
 
-    T_NULL,
+    T_NULL = 0x3FFFFFFF,
     T_ERR,
     T_EOF = EOF
 };
