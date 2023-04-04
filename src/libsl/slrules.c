@@ -10,6 +10,19 @@ dint sl_skipAnyWhitespace(SLLexerContext* ctx, SLToken* token)
     return SL_LEX_NEXT_RULE;
 }
 
+dint sl_skipAnyWhitespaceAndReturn(SLLexerContext* ctx, SLToken* token)
+{
+    while (sl_isSpace(ctx->LastChar)) // Skip any whitespace
+        ctx->LastChar = sl_advance(ctx);
+
+    token->type         = T_WHITESPACE;
+    token->typeName     = SL_SET_STRING(SL_TOSTRING(T_WHITESPACE));
+    token->tokenInfo    = SL_TOKEN_INFO_NONE;
+    token->value        = 0;
+
+    return SL_LEX_RET_TOK;
+}
+
 dint sl_setLocation(SLLexerContext* ctx, SLToken* token)
 {
     ctx->CurLoc = ctx->LexLoc;

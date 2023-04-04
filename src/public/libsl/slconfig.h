@@ -54,12 +54,14 @@ enum SLTokenType {
     T_KEYWORD,
     T_IDENTIFIER,
     T_PUNCTUATOR,
+    T_WHITESPACE,
     T_CONSTANT,
-    T_STRING = 0xFF,
+    T_STRING = 0x3FFF,
 
-    // Your tokens here...
+    // Your tokens are in the range 0x3FFF ... 0x3FFFFFFF
 
     T_NULL = 0x3FFFFFFF,
+    T_ENDL,
     T_ERR,
     T_EOF = EOF
 };
