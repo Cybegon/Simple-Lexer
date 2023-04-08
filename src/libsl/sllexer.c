@@ -20,6 +20,8 @@ SLLexerContext* sl_createLexerContext(const SLLexList lexList[], const SLLexStag
 
 void sl_freeLexerContext(SLLexerContext* ctx)
 {
+    sl_closeFile(ctx);
+
     SL_FREE(ctx);
 }
 

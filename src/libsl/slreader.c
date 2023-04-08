@@ -16,6 +16,18 @@ dint sl_isSpace(dint c)
     }
 }
 
+dint sl_isNextLine(dint c)
+{
+    switch(c)
+    {
+        case '\r':
+        case '\n':
+            return TRUE;
+        default:
+            return FALSE;
+    }
+}
+
 void sl_openFile(SLLexerContext* ctx, const char* path)
 {
     if (ctx->curFile != NULL) {
@@ -34,9 +46,19 @@ void sl_closeFile(SLLexerContext* ctx)
     }
 }
 
+VOID sl_setPos(SLLexerContext* ctx, SLSourceLocation sourceLocation)
+{
+
+}
+
 dint sl_getc(SLLexerContext* ctx)
 {
     return SL_GETC(ctx->curFile);
+}
+
+dint sl_ungetc(SLLexerContext* ctx, dint c)
+{
+    return SL_UNGETC(c, ctx->curFile);
 }
 
 dint sl_advance(SLLexerContext* ctx)
@@ -44,9 +66,15 @@ dint sl_advance(SLLexerContext* ctx)
     dint LastChar = sl_getc(ctx);
 
     ++ctx->LexLoc.pos;
-    if (sl_isSpace(LastChar)) {
+    if (sl_isNextLine(LastChar)) {
         ++ctx->LexLoc.line;
         ctx->LexLoc.col = 0;
+
+        LastChar = sl_getc(ctx);
+        if (!sl_isNextLine(LastChar))
+            sl_ungetc(ctx, LastChar);
+        else
+            ++ctx->LexLoc.pos;
     } else {
         ++ctx->LexLoc.col;
     }

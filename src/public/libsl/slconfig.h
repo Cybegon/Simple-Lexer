@@ -7,9 +7,9 @@
 #   define EOF (-1)
 #endif
 
-#define SL_ENUM_START 256
-#define SL_ENUM_CUSTOM_START 0x3FFF
-#define SL_ENUM_CUSTOM_END 0x3FFFFFFF
+#define SL_ENUM_START           0x100
+#define SL_ENUM_CUSTOM_START    0x3FFF
+#define SL_ENUM_CUSTOM_END      0x3FFFFFFF
 
 #if !defined(NO_STDLIB)
 #   include <stdio.h>
@@ -17,13 +17,14 @@
 #   include <stdlib.h>
 #   include <ctype.h>
 
-#   define SL_FILE             FILE
-#   define SL_FOPEN(p, m)      fopen(p, m)
-#   define SL_FREAD(b, s, f)   fread(b, s, 1, f)
-#   define SL_FWRITE(b, s, f)  fwrite(b, s, 1, f)
-#   define SL_FCLOSE(f)        fclose(f)
-#   define SL_GETC(f)          getc(f)
-#   define SL_GETPOS(f)        ftell(f)
+#   define SL_FILE              FILE
+#   define SL_FOPEN(p, m)       fopen(p, m)
+#   define SL_FREAD(b, s, f)    fread(b, s, 1, f)
+#   define SL_FWRITE(b, s, f)   fwrite(b, s, 1, f)
+#   define SL_FCLOSE(f)         fclose(f)
+#   define SL_GETC(f)           getc(f)
+#   define SL_UNGETC(c, f)      ungetc(c, f)
+#   define SL_GETPOS(f)         ftell(f)
 
 #   define SL_STRDUP(s)  strdup(s)
 
@@ -38,7 +39,10 @@
 #   define SL_FWRITE(b, s, f)
 #   define SL_FCLOSE(f)
 #   define SL_GETC(f)
+#   define SL_UNGETC(c, f)
 #   define SL_GETPOS(f)
+
+#   define SL_STRDUP(s)
 
 #   define SL_BZERO(p, s)
 

@@ -10,7 +10,7 @@ dint sl_skipAnyWhitespace(SLLexerContext* ctx, SLToken* token)
     return SL_LEX_NEXT_RULE;
 }
 
-dint sl_skipAnyWhitespaceAndReturn(SLLexerContext* ctx, SLToken* token)
+dint sl_skipAnyWhitespaceAndReturn(SLLexerContext* ctx, SLToken* token) // TODO: Rename
 {
     if (sl_isSpace(ctx->LastChar)) {
         while (sl_isSpace(ctx->LastChar)) // Skip any whitespace

@@ -76,7 +76,6 @@ struct SLToken {
 
 SLLexerContext* sl_createLexerContext(const SLLexList lexList[], const SLLexStage lexStageList[]);
 void sl_freeLexerContext(SLLexerContext* ctx);
-SLLexerContext* sl_initContext();
 
 SLString sl_getTokenType  (SLLexerContext* ctx, SLToken token);
 SLToken sl_getNextToken   (SLLexerContext* ctx);
