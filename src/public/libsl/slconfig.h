@@ -47,6 +47,7 @@
 typedef enum SLTokenType SLTokenType;
 
 enum SLTokenType {
+    T_NULL = 0,
     T_NONE = SL_ENUM_START,
     T_LABEL,
     T_REGISTER,
@@ -60,8 +61,7 @@ enum SLTokenType {
 
     // Your tokens are in the range 0x3FFF ... 0x3FFFFFFF
 
-    T_NULL = 0x3FFFFFFF,
-    T_ENDL,
+    T_ENDL = 0x3FFFFFFF,
     T_ERR,
     T_EOF = EOF
 };
