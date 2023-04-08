@@ -8,6 +8,7 @@
 // Default stages
 dint sl_skipAnyWhitespace           (SLLexerContext* ctx, SLToken* token);
 dint sl_skipAnyWhitespaceAndReturn  (SLLexerContext* ctx, SLToken* token);
+dint sl_retNextLine                 (SLLexerContext* ctx, SLToken* token);
 dint sl_setLocation                 (SLLexerContext* ctx, SLToken* token);
 dint sl_lexemeHandler               (SLLexerContext* ctx, SLToken* token);
 dint sl_mathString                  (SLLexerContext* ctx, SLToken* token);
