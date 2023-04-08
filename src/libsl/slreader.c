@@ -69,12 +69,6 @@ dint sl_advance(SLLexerContext* ctx)
     if (sl_isNextLine(LastChar)) {
         ++ctx->LexLoc.line;
         ctx->LexLoc.col = 0;
-
-        LastChar = sl_getc(ctx);
-        if (!sl_isNextLine(LastChar))
-            sl_ungetc(ctx, LastChar);
-        else
-            ++ctx->LexLoc.pos;
     } else {
         ++ctx->LexLoc.col;
     }

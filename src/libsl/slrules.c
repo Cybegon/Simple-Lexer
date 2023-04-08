@@ -12,19 +12,33 @@ dint sl_skipAnyWhitespace(SLLexerContext* ctx, SLToken* token)
 
 dint sl_skipAnyWhitespaceAndReturn(SLLexerContext* ctx, SLToken* token) // TODO: Rename
 {
-    if (sl_isSpace(ctx->LastChar)) {
-        while (sl_isSpace(ctx->LastChar)) // Skip any whitespace
-            ctx->LastChar = sl_advance(ctx);
+    if (!sl_isSpace(ctx->LastChar))
+        return SL_LEX_NEXT_RULE;
 
-        token->type         = T_WHITESPACE;
-        token->typeName     = SL_SET_STRING(SL_TOSTRING(T_WHITESPACE));
-        token->tokenInfo    = SL_TOKEN_INFO_NONE;
-        token->value        = 0;
+    while (sl_isSpace(ctx->LastChar)) // Skip any whitespace
+        ctx->LastChar = sl_advance(ctx);
 
-        return SL_LEX_RET_TOK;
-    }
+    token->type         = T_WHITESPACE;
+    token->typeName     = SL_SET_STRING(SL_TOSTRING(T_WHITESPACE));
+    token->tokenInfo    = SL_TOKEN_INFO_NONE;
+    token->value        = 0;
 
-    return SL_LEX_NEXT_RULE;
+    return SL_LEX_RET_TOK;
+
+
+}
+
+dint sl_retNextLine(SLLexerContext* ctx, SLToken* token)
+{
+    if (!sl_isNextLine(ctx->LastChar))
+        return SL_LEX_NEXT_RULE;
+
+    token->type         = T_ENDL;
+    token->typeName     = SL_SET_STRING(SL_TOSTRING(T_ENDL));
+    token->tokenInfo    = SL_TOKEN_INFO_NONE;
+    token->value        = 0;
+
+    return SL_LEX_RET_TOK;
 }
 
 dint sl_setLocation(SLLexerContext* ctx, SLToken* token)
