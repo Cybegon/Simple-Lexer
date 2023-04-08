@@ -8,6 +8,8 @@
 #endif
 
 #define SL_ENUM_START 256
+#define SL_ENUM_CUSTOM_START 0x3FFF
+#define SL_ENUM_CUSTOM_END 0x3FFFFFFF
 
 #if !defined(NO_STDLIB)
 #   include <stdio.h>
@@ -57,11 +59,11 @@ enum SLTokenType {
     T_PUNCTUATOR,
     T_WHITESPACE,
     T_CONSTANT,
-    T_STRING = 0x3FFF,
+    T_STRING = SL_ENUM_CUSTOM_START,
 
     // Your tokens are in the range 0x3FFF ... 0x3FFFFFFF
 
-    T_ENDL = 0x3FFFFFFF,
+    T_ENDL = SL_ENUM_CUSTOM_END,
     T_ERR,
     T_EOF = EOF
 };
