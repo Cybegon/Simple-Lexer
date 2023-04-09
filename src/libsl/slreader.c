@@ -7,7 +7,6 @@ dint sl_isSpace(dint c)
         case ' ':
         case 9:
         case '\r':
-        case '\n':
         case 11:
         case '\f':
             return TRUE;

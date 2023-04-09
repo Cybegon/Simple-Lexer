@@ -38,6 +38,8 @@ dint sl_retNextLine(SLLexerContext* ctx, SLToken* token)
     token->tokenInfo    = SL_TOKEN_INFO_NONE;
     token->value        = 0;
 
+    ctx->LastChar = sl_advance(ctx);
+
     return SL_LEX_RET_TOK;
 }
 
