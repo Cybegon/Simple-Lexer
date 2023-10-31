@@ -132,8 +132,11 @@ dint sl_mathString(SLLexerContext* ctx, SLToken* token)
 
 dint sl_matchNumber(SLLexerContext* ctx, SLToken* token)
 {
+    int zero = FALSE;
+
     if (ctx->LastChar == '0') { // 0[xX][0-9a-fA-F]+
         ctx->LastChar = sl_advance(ctx);
+        zero = TRUE;
         if (ctx->LastChar == 'x' || ctx->LastChar == 'X') {
             SLString hexNumStr = {"", 0};
 
@@ -153,26 +156,20 @@ dint sl_matchNumber(SLLexerContext* ctx, SLToken* token)
         }
     }
 
-    if (isdigit(ctx->LastChar) || ctx->LastChar == '.') { // Number: [0-9.]+
+    if (isdigit(ctx->LastChar) || ctx->LastChar == '.' || ctx->LastChar == '-' || zero == TRUE) { // Number: [0-9.]+
         memset(ctx->IdentifierStr.data, 0, ctx->IdentifierStr.len);
         ctx->IdentifierStr.len = 0;
 
         SLString numStr = {"", 0};
 
-        numStr.data[numStr.len++] = (char)ctx->LastChar;
-        ctx->LastChar = sl_advance(ctx);
-
-        if (!isdigit(ctx->LastChar)) { // ret ASCII
-            token->type         = '.';
-            token->tokenInfo    = 0;
-
-            return SL_LEX_RET_TOK;
+        if (zero == TRUE) {
+            numStr.data[numStr.len++] = '0';
+        } else {
+            do {
+                numStr.data[numStr.len++] = (char)ctx->LastChar;
+                ctx->LastChar = sl_advance(ctx);
+            } while (isdigit(ctx->LastChar) || ctx->LastChar == '.');
         }
-
-        do {
-            numStr.data[numStr.len++] = (char)ctx->LastChar;
-            ctx->LastChar = sl_advance(ctx);
-        } while (isdigit(ctx->LastChar) || ctx->LastChar == '.');
 
         token->type     = T_CONSTANT;
         token->typeName = SL_SET_STRING(SL_TOSTRING(T_CONSTANT));
