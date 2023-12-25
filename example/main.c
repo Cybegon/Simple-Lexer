@@ -31,6 +31,7 @@ const SLLexList lexList_rb[] = {
 const SLLexStage lexStageLst[] = {
         sl_skipAnyWhitespace,
         sl_setLocation,
+        sl_retNextLine,
         sl_lexemeHandler,
         sl_mathString,
         sl_matchNumber,
@@ -69,6 +70,8 @@ int main() {
                     printf("%s value: %f\n", sl_getTokenType(ctx, token).data, token.value);
                 break;
             }
+            case T_ENDL:
+                break;
             default: {
                 printf("%s\n", sl_getTokenType(ctx, token).data);
                 break;
@@ -105,6 +108,8 @@ int main() {
                     printf("%s value: %f\n", sl_getTokenType(ctx2, token).data, token.value);
                 break;
             }
+            case T_ENDL:
+                break;
             default: {
                 printf("%s\n", sl_getTokenType(ctx2, token).data);
                 break;
